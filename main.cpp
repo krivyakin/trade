@@ -20,11 +20,15 @@ int main(int argc, char **argv)
 
 	while (std::getline(infile, line)) {
 		feed.processMessage(line);
+#ifndef DISABLE_OUT
 		if (++counter % 10 == 0) {
 			feed.printCurrentOrderBook(std::cerr);
 		}
+#endif
 	}
+#ifndef DISABLE_OUT
 	feed.printCurrentOrderBook(std::cout);
+#endif
 
 	return 0;
 }

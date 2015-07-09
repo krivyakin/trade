@@ -82,9 +82,11 @@ inline void FeedHandler::trade(const Order& sell, const Order& buy)
 
 	m_last_price_quantity += count;
 
+#ifndef DISABLE_OUT
 	std::cout << "Trade: " << sell.id << "->" << buy.id << ": " <<
 		count << "@" << sell.price <<
 	   	" (total: " << m_last_price_quantity << "@" << m_last_price << ")" << std::endl;
+#endif
 }
 
 inline void FeedHandler::add(Order& p_order, std::multiset<Order> *p_orders_map)
@@ -151,11 +153,15 @@ void FeedHandler::processMessage(const std::string& p_msg)
 		{
 			case OrderExceptionType::CORRUPTED:
 				++m_stats.corrupted;
+				break;
 			case OrderExceptionType::WRONG_NUMBER:
 				++m_stats.wrong_number;
+				break;
 		}
 	}
+#ifndef DISABLE_OUT
 	print_midquote();
+#endif
 }
 
 void FeedHandler::printCurrentOrderBook(std::ostream& stream)
